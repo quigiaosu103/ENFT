@@ -2,30 +2,26 @@
 
 [move]
 version = 0
-manifest_digest = "9CBAD9A4C195C595450CD6336166D2D74BDDC4742157FCC68AFF1ED484D459AA"
-deps_digest = "3C4103934B1E040BB6B23F1D610B4EF9F2F1166A50A104EADCF77467C004C600"
+manifest_digest = "D793CDD917413EC079B0F47A2593CEBD3C2D2E75E0B3748EC9B7D7EB68D57814"
+deps_digest = "F8BBB0CCB2491CA29A3DF03D6F92277A4F3574266507ACD77214D37ECA3F3082"
 
 dependencies = [
   { name = "Sui" },
-  { name = "oracle" },
 ]
 
 [[move.package]]
 name = "MoveStdlib"
-source = { git = "https://github.com/MystenLabs/sui.git", rev = "a0e136a04", subdir = "crates/sui-framework/packages/move-stdlib" }
+source = { git = "https://github.com/MystenLabs/sui.git", rev = "framework/testnet", subdir = "crates/sui-framework/packages/move-stdlib" }
 
 [[move.package]]
 name = "Sui"
-source = { git = "https://github.com/MystenLabs/sui.git", rev = "a0e136a04", subdir = "crates/sui-framework/packages/sui-framework" }
+source = { git = "https://github.com/MystenLabs/sui.git", rev = "framework/testnet", subdir = "crates/sui-framework/packages/sui-framework" }
 
 dependencies = [
   { name = "MoveStdlib" },
 ]
 
-[[move.package]]
-name = "oracle"
-source = { git = "https://github.com/MystenLabs/apps", rev = "db04fbd17d6ba91ade45c32f609b949fb47d209b", subdir = "weather-oracle" }
-
-dependencies = [
-  { name = "Sui" },
-]
+[move.toolchain-version]
+compiler-version = "1.18.1"
+edition = "legacy"
+flavor = "sui"

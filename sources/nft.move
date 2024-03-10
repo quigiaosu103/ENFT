@@ -1,16 +1,14 @@
 module nft_contract::nft {
     use sui::object;
     use std::string;
-    use sui::url;
     use sui::tx_context;
     use sui::transfer;
-    // use oracle::weather::{WeatherOracle};
-
+    use nft_contract::url::{Url, new_unsafe_from_bytes, inner_url};
     struct WNFT has key, store {
         id: object::UID,
         name: string::String,
-        link: url::Url,
-        image_url: url::Url,
+        link: Url,
+        image_url: Url,
         description: string::String,
         creator: string::String
     }
@@ -19,8 +17,8 @@ module nft_contract::nft {
         WNFT {
             id: object::new(ctx),
             name: string::utf8(_name),
-            link: url::new_unsafe_from_bytes(_link),
-            image_url: url::new_unsafe_from_bytes(_image_url),
+            link: new_unsafe_from_bytes(_link),
+            image_url: new_unsafe_from_bytes(_image_url),
             description: string::utf8(_description),
             creator: string::utf8(_creator)
         }
@@ -31,34 +29,31 @@ module nft_contract::nft {
     }
 
     public fun update_link(nft: &mut WNFT, _link: vector<u8>) {
-        nft.link =  url::new_unsafe_from_bytes(_link);
+        nft.link =  new_unsafe_from_bytes(_link);
     }
 
     public fun update_image_url(nft: &mut WNFT, _image_url: vector<u8>) {
-        nft.image_url = url::new_unsafe_from_bytes(_image_url);
+        nft.image_url = new_unsafe_from_bytes(_image_url);
     }
 
     public fun get_name(nft: &WNFT): &string::String {
         &nft.name
     }
 
-    // public fun get_link(nft: &WNFT): &std::ascii::String {
-    //     let lk = &nft.link;
-    //     &url::inner_url(lk)
-    // }
+    public fun get_link(nft: &mut WNFT): &string::String {
+        inner_url(&nft.link)
+    }
 
-    // public fun get_image_url(nft: &WNFT): &string::String {
-    //     &string::url(nft.image_url)
-    // }
+    public fun get_image_url(nft: &WNFT): &string::String {
+        inner_url(&nft.image_url)
+    }
 
     public fun get_description(nft: &WNFT): &string::String {
         &nft.description
     }
 
-    // fun get_temp(weather_oracle: &WeatherOracle): u32 {
-    //     let geoname_id = 2988507; // Paris, France
-    //     oracle::weather::city_weather_oracle_temp(weather_oracle, geoname_id)
-    // }
+  
+
 
     #[test_only]
     public fun mint_for_test(
